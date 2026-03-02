@@ -1,0 +1,63 @@
+.report-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0px 8px 22px var(--shadow);
+}
+
+.report-card h3 {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.dept {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.progress {
+    flex: 1;
+    height: 20px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 1s ease;
+}
+
+.percent {
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 10px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin: auto;
+    color: var(--accent);
+}
+
+.trend-up {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.trend-down {
+    color: #dc3545;
+    font-weight: 600;
+}
