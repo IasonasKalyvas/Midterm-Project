@@ -2,93 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FreshTrack Supermarket Task Manager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="index.css">
+    <title>Index Page</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">FreshTrack</a>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg  main-header shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="logo.jpg" class="logo-img me-2" alt="logo">
+            <span class="fw-bold fs-3">FreshTrack</span>
+        </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" href="index.html">Dashboard</a></li>
+        <div class="collapse navbar-collapse justify-content-end" id="menu">
+            <ul class="navbar-nav nav-links align-items-lg-center">
                 <li class="nav-item"><a class="nav-link" href="tasks.html">Tasks</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Inventory</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Alerts</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
-                <li class="nav-item"><a class="nav-link" href='#'>Dark Mode</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="report.html">Reports</a></li>
+
+                <li class="nav-item ms-lg-3">
+                    <button id="darkModeToggle" class="btn btn-outline-info" aria-label="Toggle Dark Mode">
+                        <i id="darkModeIcon" class="bi bi-moon-fill fs-4"></i>
+                    </button>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<section class="py-5 text-center bg-light">
-    <div class="container">
-        <h1 class="display-4 fw-bold">Welcome to FreshTrack</h1>
-        <p class="lead">
-            A smart task and inventory management system designed for modern supermarkets.
+<!-- Main Body -->
+<div class="container py-5">
+
+    <!-- Welcome Section + Message -->
+    <section class="hero-section text-center mb-5">
+        <h1 class="hero-title">Welcome to FreshTrack</h1>
+        <p class="hero-subtitle">
+            Welcome Manager! This is a smarter, faster way to manage supermarket operations.
+            Organize tasks, track progress, and optimize your workflow.
         </p>
-        <a href="tasks.html" class="btn btn-danger btn-lg mt-3">
-            Manage Today's Tasks
-        </a>
-    </div>
-</section>
+        <p class="hero-date">Today's date: <span id="dynamicDate"></span></p>
+    </section>
 
-<section class="py-5">
-    <div class="container">
-        <h2 class="text-center mb-4">Latest Activity</h2>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card shadow-sm p-3">
-                    <h5>Stock Restocked</h5>
-                    <p>Milk inventory updated - 120 units added.</p>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card shadow-sm p-3">
-                    <h5>Cleaning Completed</h5>
-                    <p>Floor cleaning checklist marked complete.</p>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card shadow-sm p-3">
-                    <h5>Temperature Check</h5>
-                    <p>Freezer temperature verified and logged.</p>
-                </div>
+    <!-- Stats added from the Tasks page -->
+    <section class="stats-section row g-4">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h5>Tasks Today</h5>
+                <p id="tasksToday" class="stat-value">0</p>
             </div>
         </div>
-    </div>
-</section>
 
-<section class="py-5 bg-light text-center">
-    <div class="container">
-        <h2>Daily Motivation</h2>
-        <p id="quoteText" class="lead mt-3">
-            I am not just stocking shelves; I am ensuring my community has access to what they need to thrive.
-        </p>
-    </div>
-</section>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h5>Overdue Tasks</h5>
+                <p id="tasksOverdue" class="stat-value">0</p>
+            </div>
+        </div>
 
-<footer class="bg-success text-white text-center py-5">
-    <div class="container">
-        <p class="mb-0">&copy; 2025 FreshTrack. All rights reserved.</p>
-        <small>Contact: support@freshtrack.com</small>
-    </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h5>Completed Tasks</h5>
+                <p id="tasksCompleted" class="stat-value">0</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Critical alerts updated from tasks page (whenever a user inputs an incomplete task of high importance) -->
+    <section class="data-panel mt-5">
+        <h3><i class="bi bi-exclamation-triangle-fill text-danger"></i> Critical Alerts</h3>
+        <ul id="criticalAlerts"></ul>
+    </section>
+
+    <!-- Latest activities updated from tasks page (whenever a user inputs a completed task) -->
+    <section class="data-panel mt-5">
+        <h3><i class="bi bi-check-circle-fill text-success"></i> Latest Activity</h3>
+        <ul id="latestActivity"></ul>
+    </section>
+
+    <!-- Weather API -->
+    <section class="weather-panel mt-5 mb-5">
+
+        <h3 class="weather-title">Weather Update</h3>
+
+        <div class="search">
+            <input id="city" type="text" placeholder="Enter city name">
+            <button id="btn"><i class="bi bi-search"></i></button>
+        </div>
+
+        <div class="weather-display text-center">
+            <img src="weather.png" class="weather-icon" alt="weather icon">
+            <h1 class="temp">--°c</h1>
+            <h2 class="city">Loading...</h2>
+
+            <div class="weather-details d-flex justify-content-around mt-3">
+
+                <div class="detail-box">
+                    <img src="Humidity.png" class="detail-icon" alt="humidity icon">
+                    <p class="humidity">--%</p>
+                    <span>Humidity</span>
+                </div>
+
+                <div class="detail-box">
+                    <img src="wind.png" class="detail-icon" alt="wind icon">
+                    <p class="wind">-- Km/h</p>
+                    <span>Wind Speed</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- Footer -->
+<footer class="main-footer text-center p-4">
+    <img src="logo.jpg" class="footer-logo mb-2" alt="logo">
+    <p><a href="about.html" class="footer-link">About Us</a></p>
+    <p class="mt-2">© 2026 FreshTrack Inc. All rights reserved.</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/script.js"></script>
-
-</body>
-</html>
+<script src="index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
