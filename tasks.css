@@ -1,81 +1,9 @@
-/* White mode */
-:root {
-    --bg: #f6fff6;
-    --text: #203020;
-    --card: #ffffff;
-    --border: #d8f5d8;
+/* ===============================
+   Tasks
+================================ */
 
-    --accent: #48b368;
-    --accent-soft: #83d49c;
-    --shadow: rgba(72, 179, 104, 0.15);
-}
-
-/* Dark mode */
-html.dark {
-    --bg: #101a10;
-    --text: #e9ffe9;
-    --card: #1d2b1d;
-    --border: #355a35;
-
-    --accent: #7df0a1;
-    --accent-soft: #9cffbe;
-    --shadow: rgba(125, 240, 161, 0.25);
-}
-
-/* Characters */
-html, body {
-    height: 100%; 
-    display: flex; 
-    flex-direction: column; 
-}
-
-body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Poppins", sans-serif;
-    margin: 0;
-    transition: background .25s ease, color .25s ease;
-}
-
-a {
-    color: var(--accent);
-    text-decoration: none;
-}
-
-/* Navigation bar */
-.main-header{
- background: var(--card);
- border-bottom: 2px solid var(--accent);
-}
-
-
-.navbar-brand{
- color: var(--text) !important;
- font-weight: 700;
-}
-
-.navbar-brand:hover{
- color: var(--accent) !important;
-}
-
-.nav-link{
- color: var(--text) !important;
- font-weight: 500;
-}
-
-.nav-link:hover{
- color: var(--accent) !important;
-}
-
-.logo-img,
-.footer-logo{
- width: 50px;
- height: 50px;
- border-radius: 8px;
-}
-
-/* Tasks */
-#todayTasks, #completedTasks {
+#todayTasks, 
+#completedTasks {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -95,6 +23,7 @@ a {
 }
 
 /* Tasks that are completed */
+
 .dept-storage {
     background-color: rgb(190, 110, 243);
 }
@@ -105,11 +34,4 @@ a {
 
 .completed-task {
     background-color: lightgreen; 
-}
-
-/* Footer */
-.main-footer {
-    background: var(--card);
-    border-top: 2px solid var(--accent);
-    margin-top: auto; 
 }

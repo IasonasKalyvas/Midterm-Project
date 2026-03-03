@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* ---------------- DATE ---------------- */
+    /* Dynamic Date Updating */
 
     const dateElement = document.getElementById("dynamicDate");
     if (dateElement) {
         dateElement.textContent = new Date().toDateString();
     }
 
-    /* ---------------- DASHBOARD LOADER ---------------- */
+    /* Loads the Dashboard (gets the tasks) */
 
     function loadDashboard() {
 
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loadDashboard();
 
-    /* ---------------- REMOVE TASK FROM STORAGE ---------------- */
+    /* Remove a task if I want to */
 
     function removeTaskFromStorage(taskName) {
 
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return tasks;
     }
 
-    /* ---------------- UPDATE COUNTERS AFTER DELETE ---------------- */
+    /* Updates counters in the index page*/
 
     function updateCountersAfterDelete(type) {
 
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("tasksCompleted", completed);
     }
 
-    /* ---------------- DELETE CRITICAL ALERT ---------------- */
+    /* Delete critical alerts from index*/
 
     window.deleteAlert = function (alertText) {
 
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         loadDashboard();
     };
 
-    /* ---------------- DELETE ACTIVITY ---------------- */
+    /* Delete activities */
 
     window.deleteActivity = function (activityText) {
 
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
         loadDashboard();
     };
 
-    /* ---------------- WEATHER ---------------- */
+    /* Weather API functionality using API key (probably should hide the key)*/
 
     const APIKEY = "a527000cc79dbf856749c6a8fbfc9f63";
     const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     checkWeather("Athens");
 
-    /* ---------------- DARK MODE ---------------- */
+    /* Dark Mode implementation*/
 
     const toggleBtn = document.getElementById("darkModeToggle");
     const toggleIcon = document.getElementById("darkModeIcon");
