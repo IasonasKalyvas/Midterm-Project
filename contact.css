@@ -1,6 +1,4 @@
-/* ===============================
-   Map Section
-================================ */
+/* Map Section */
 
 .map-container {
     width: 100%;
@@ -15,9 +13,7 @@
     border: 0;
 }
 
-/* ===============================
-   Social Icons
-================================ */
+/* Social Icons */
 
 .social-icons a {
     font-size: 2rem;
