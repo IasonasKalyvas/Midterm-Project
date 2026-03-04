@@ -17,7 +17,7 @@ window.setLocalStorageArray = function (key, value) {
     }
 };
 
-/* Components */
+/* Navbar Component */
 const getNavbarHTML = () => `
     <nav class="navbar navbar-expand-lg main-header shadow-sm">
         <div class="container-fluid">
@@ -44,7 +44,7 @@ const getNavbarHTML = () => `
         </div>
     </nav>
 `;
-
+/* Footer Component */
 const getFooterHTML = () => `
     <footer class="main-footer text-center p-4">
         <img src="logo.jpg" class="footer-logo mb-2" alt="logo">
