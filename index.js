@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* Dynamic Date Updating */
+/* Dynamic Date Updating */
 
     const dateElement = document.getElementById("dynamicDate");
     if (dateElement) {
         dateElement.textContent = new Date().toDateString();
     }
 
-    /* Loads the Dashboard (gets the tasks) */
+/* Loads the Dashboard (gets the tasks) */
 
     function loadDashboard() {
 
@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (overdue) overdue.textContent = localStorage.getItem("tasksOverdue") || 0;
         if (completed) completed.textContent = localStorage.getItem("tasksCompleted") || 0;
 
-        const alerts = JSON.parse(localStorage.getItem("criticalAlerts")) || [];
-        const activity = JSON.parse(localStorage.getItem("latestActivity")) || [];
+        const alerts = getLocalStorageArray("criticalAlerts");
+        const activity = getLocalStorageArray("latestActivity");
 
         const alertList = document.getElementById("criticalAlerts");
         const activityList = document.getElementById("latestActivity");
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alertList.innerHTML = "";
             alerts.forEach(a => {
                 let li = document.createElement("li");
-                li.innerHTML = `${a} 
+                li.innerHTML = `${a}
                 <button class="btn btn-danger btn-sm" onclick="deleteAlert('${a}')">🗑️</button>`;
                 alertList.appendChild(li);
             });
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
             activityList.innerHTML = "";
             activity.forEach(a => {
                 let li = document.createElement("li");
-                li.innerHTML = `${a} 
+                li.innerHTML = `${a}
                 <button class="btn btn-danger btn-sm" onclick="deleteActivity('${a}')">🗑️</button>`;
                 activityList.appendChild(li);
             });
@@ -48,20 +48,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loadDashboard();
 
-    /* Remove a task if I want to */
+/* Remove a task if I want to */
 
     function removeTaskFromStorage(taskName) {
 
-        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
+        let tasks = getLocalStorageArray("tasks");
         tasks = tasks.filter(task => task.name !== taskName);
-
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+        setLocalStorageArray("tasks", tasks);
 
         return tasks;
     }
 
-    /* Updates counters in the index page*/
+/* Updates counters in the index page*/
 
     function updateCountersAfterDelete(type) {
 
@@ -69,29 +67,23 @@ document.addEventListener("DOMContentLoaded", function () {
         let overdue = parseInt(localStorage.getItem("tasksOverdue")) || 0;
         let completed = parseInt(localStorage.getItem("tasksCompleted")) || 0;
 
-        // Always decrease Tasks Today
         tasksToday = Math.max(0, tasksToday - 1);
 
-        if (type === "critical") {
-            overdue = Math.max(0, overdue - 1);
-        }
-
-        if (type === "completed") {
-            completed = Math.max(0, completed - 1);
-        }
+        if (type === "critical") overdue = Math.max(0, overdue - 1);
+        if (type === "completed") completed = Math.max(0, completed - 1);
 
         localStorage.setItem("tasksToday", tasksToday);
         localStorage.setItem("tasksOverdue", overdue);
         localStorage.setItem("tasksCompleted", completed);
     }
 
-    /* Delete critical alerts from index*/
+/* Delete critical alerts from index*/
 
     window.deleteAlert = function (alertText) {
 
-        let alerts = JSON.parse(localStorage.getItem("criticalAlerts")) || [];
+        let alerts = getLocalStorageArray("criticalAlerts");
         alerts = alerts.filter(alert => alert !== alertText);
-        localStorage.setItem("criticalAlerts", JSON.stringify(alerts));
+        setLocalStorageArray("criticalAlerts", alerts);
 
         const taskName = alertText.replace(/^🔴\s*/, "").split(" - ")[0];
 
@@ -101,13 +93,13 @@ document.addEventListener("DOMContentLoaded", function () {
         loadDashboard();
     };
 
-    /* Delete activities */
+/* Delete activities */
 
     window.deleteActivity = function (activityText) {
 
-        let activity = JSON.parse(localStorage.getItem("latestActivity")) || [];
+        let activity = getLocalStorageArray("latestActivity");
         activity = activity.filter(act => act !== activityText);
-        localStorage.setItem("latestActivity", JSON.stringify(activity));
+        setLocalStorageArray("latestActivity", activity);
 
         const taskName = activityText.replace(/^✅\s*/, "").split(" completed")[0];
 
@@ -173,35 +165,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
     checkWeather("Athens");
 
-    /* Dark Mode implementation*/
-
-    const toggleBtn = document.getElementById("darkModeToggle");
-    const toggleIcon = document.getElementById("darkModeIcon");
-    const root = document.documentElement;
-    const storageKey = "theme";
-
-    function applyTheme(theme) {
-        if (theme === "dark") {
-            root.classList.add("dark");
-            toggleIcon.classList.remove("bi-moon-fill");
-            toggleIcon.classList.add("bi-sun-fill");
-        } else {
-            root.classList.remove("dark");
-            toggleIcon.classList.remove("bi-sun-fill");
-            toggleIcon.classList.add("bi-moon-fill");
-        }
-    }
-
-    const savedTheme = localStorage.getItem(storageKey);
-    if (savedTheme) applyTheme(savedTheme);
-
-    if (toggleBtn) {
-        toggleBtn.addEventListener("click", () => {
-            const isDark = root.classList.contains("dark");
-            const newTheme = isDark ? "light" : "dark";
-            localStorage.setItem(storageKey, newTheme);
-            applyTheme(newTheme);
-        });
-    }
-
 });
+

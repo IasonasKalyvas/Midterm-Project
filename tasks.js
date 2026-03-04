@@ -1,42 +1,174 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const taskList = [];
+
     const todayTasks = document.getElementById("todayTasks");
-    const completedTasks = document.getElementById("completedTasks");
-    const darkModeToggle = document.getElementById("darkModeToggle");
-    const darkModeIcon = document.getElementById("darkModeIcon");
-    const root = document.documentElement;
-    const storageKey = "theme";
+    const completedTasksContainer = document.getElementById("completedTasks");
+
     const filterStatus = document.getElementById("filterStatus");
-const sortOption = document.getElementById("sortOption");
-if (filterStatus) filterStatus.addEventListener("change", updateTaskDisplay);
-if (sortOption) sortOption.addEventListener("change", updateTaskDisplay);
+    const sortOption = document.getElementById("sortOption");
+    const addBtn = document.getElementById("addTask");
 
-    /* Dark Mode implementation*/
+    /* Add a task */
 
-    function applyTheme(theme) {
-        if (theme === "dark") {
-            root.classList.add("dark");
-            darkModeIcon.classList.remove("bi-moon-fill");
-            darkModeIcon.classList.add("bi-sun-fill");
-        } else {
-            root.classList.remove("dark");
-            darkModeIcon.classList.remove("bi-sun-fill");
-            darkModeIcon.classList.add("bi-moon-fill");
-        }
+    if (addBtn) {
+        addBtn.addEventListener("click", function () {
+
+            const search = document.getElementById("search").value.trim();
+            const dept = document.getElementById("dept").value;
+            const status = document.getElementById("status").value;
+            const priority = document.getElementById("priority").value;
+
+            if (!search || !dept || !status || !priority) {
+                alert("Please fill all fields.");
+                return;
+            }
+
+            const task = {
+                name: search,
+                dept: dept,
+                status: status,
+                priority: priority,
+                dueDate: new Date().toISOString()
+            };
+
+            taskList.push(task);
+
+            saveTasksToLocalStorage();
+            updateTaskDisplay();
+            updateHomePageAlerts();
+            updateDashboardCounters();
+
+            document.getElementById("search").value = "";
+            document.getElementById("dept").selectedIndex = 0;
+            document.getElementById("status").selectedIndex = 0;
+            document.getElementById("priority").selectedIndex = 0;
+        });
     }
 
-    const savedTheme = localStorage.getItem(storageKey);
-    if (savedTheme) applyTheme(savedTheme);
+    /* Filters and sorting*/
 
-    darkModeToggle.addEventListener("click", () => {
-        const isDark = root.classList.contains("dark");
-        const newTheme = isDark ? "light" : "dark";
-        localStorage.setItem(storageKey, newTheme);
-        applyTheme(newTheme);
-    });
+    if (filterStatus) {
+        filterStatus.addEventListener("change", updateTaskDisplay);
+    }
 
-    /* Updates the Dashboard counter whenever a task is completed or high incompolete */
+    if (sortOption) {
+        sortOption.addEventListener("change", updateTaskDisplay);
+    }
+
+    /* Display*/
+
+    function updateTaskDisplay() {
+
+        todayTasks.innerHTML = "";
+        completedTasksContainer.innerHTML = "";
+
+        let filteredTasks = [...taskList];
+
+        if (filterStatus && filterStatus.value !== "all") {
+            filteredTasks = filteredTasks.filter(
+                task => task.status === filterStatus.value
+            );
+        }
+
+        if (sortOption && sortOption.value === "name") {
+            filteredTasks.sort((a, b) => a.name.localeCompare(b.name));
+        } else {
+            filteredTasks.sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
+        }
+
+        filteredTasks.forEach(task => {
+
+            const taskElement = document.createElement("div");
+
+            /* Colors depending on status*/
+
+            let priorityClass = "";
+
+            if (task.status === "complete") {
+                priorityClass = "task-complete";
+            } else if (task.priority === "low") {
+                priorityClass = "task-low";
+            } else if (task.priority === "medium") {
+                priorityClass = "task-medium";
+            } else if (task.priority === "high") {
+                priorityClass = "task-high";
+            }
+
+            taskElement.className = `task-item ${priorityClass}`;
+
+            /* Content*/
+
+            taskElement.innerHTML = `
+                <div>
+                    <strong>${task.name}</strong>
+                    <div>
+                        Dept: ${task.dept} | 
+                        Status: ${task.status} | 
+                        Priority: ${task.priority}
+                    </div>
+                </div>
+                <div class="mt-2">
+                    ${task.status === "incomplete"
+                        ? `<button class="btn btn-success me-2 complete-btn">✔ Completed</button>`
+                        : ""}
+                    <button class="btn btn-danger delete-btn">Delete</button>
+                </div>
+            `;
+
+            /* Complete */
+
+            const completeBtn = taskElement.querySelector(".complete-btn");
+
+            if (completeBtn) {
+                completeBtn.addEventListener("click", function () {
+                    task.status = "complete";
+                    saveTasksToLocalStorage();
+                    updateTaskDisplay();
+                    updateHomePageAlerts();
+                    updateDashboardCounters();
+                });
+            }
+
+            /* Delete */
+
+            const deleteBtn = taskElement.querySelector(".delete-btn");
+
+            deleteBtn.addEventListener("click", function () {
+                const index = taskList.indexOf(task);
+                if (index > -1) {
+                    taskList.splice(index, 1);
+                    saveTasksToLocalStorage();
+                    updateTaskDisplay();
+                    updateHomePageAlerts();
+                    updateDashboardCounters();
+                }
+            });
+
+            /* Takes the status and takes it to the correct section */
+
+            if (task.status === "incomplete") {
+                todayTasks.appendChild(taskElement);
+            } else {
+                completedTasksContainer.appendChild(taskElement);
+            }
+        });
+    }
+
+    /* Stores to local storage */
+
+    function saveTasksToLocalStorage() {
+        localStorage.setItem("tasks", JSON.stringify(taskList));
+    }
+
+    function loadTasksFromLocalStorage() {
+        const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        savedTasks.forEach(task => taskList.push(task));
+        updateTaskDisplay();
+        updateDashboardCounters();
+    }
+
+    /* Homepage Counters */
 
     function updateDashboardCounters() {
 
@@ -55,134 +187,7 @@ if (sortOption) sortOption.addEventListener("change", updateTaskDisplay);
         localStorage.setItem("tasksCompleted", completedTasksCount);
     }
 
-    /* Add a task */
-
-    document.getElementById("addTask").addEventListener("click", function () {
-
-        const search = document.getElementById("search").value.trim();
-        const dept = document.getElementById("dept").value;
-        const status = document.getElementById("status").value;
-        const priority = document.getElementById("priority").value;
-
-        if (search && dept && status && priority) {
-
-            const task = {
-                name: search,
-                dept: dept,
-                status: status,
-                priority: priority,
-                dueDate: new Date().toLocaleString()
-            };
-
-            taskList.push(task);
-
-            updateTaskDisplay();
-            saveTasksToLocalStorage();
-            updateHomePageAlerts();
-            updateDashboardCounters();
-        }
-    });
-
-    /* Display all the tasks added */
-
-   function updateTaskDisplay() {
-
-    todayTasks.innerHTML = '';
-    completedTasks.innerHTML = '';
-
-    let filteredTasks = [...taskList];
-
-    /* Filtering */
-    if (filterStatus && filterStatus.value !== "all") {
-        filteredTasks = filteredTasks.filter(
-            task => task.status === filterStatus.value
-        );
-    }
-
-    /* Sorting*/
-    if (sortOption && sortOption.value === "name") {
-        filteredTasks.sort((a, b) => a.name.localeCompare(b.name));
-    } else {
-        filteredTasks.sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
-    }
-
-    /* Displaying */
-    filteredTasks.forEach(task => {
-
-        const taskElement = document.createElement("div");
-        taskElement.className = "task-item";
-
-        const deptClass = task.dept === "Storage" ? "dept-storage" : "dept-cleaning";
-
-        const deleteButton =
-            `<button class="btn btn-danger" onclick="deleteTask('${task.name}')">🗑️ Delete</button>`;
-
-        const completeButton =
-            `<button class="btn btn-success me-2" onclick="completeTask('${task.name}')">✔️ Completed</button>`;
-
-        taskElement.innerHTML = `
-            <div class="${deptClass}">
-                <span>🔹 ${task.name}</span>
-                <span>Dept: ${task.dept} | Status: ${task.status} | Priority: ${task.priority}</span>
-            </div>
-            ${task.status === "incomplete" ? completeButton : ''} ${deleteButton}
-        `;
-
-        if (task.status === "incomplete") {
-            todayTasks.appendChild(taskElement);
-        } else {
-            completedTasks.appendChild(taskElement);
-        }
-    });
-}
-
-    /* Stores to local storage the tasks */
-
-    function saveTasksToLocalStorage() {
-        localStorage.setItem("tasks", JSON.stringify(taskList));
-    }
-
-    function loadTasksFromLocalStorage() {
-        const savedTasks = JSON.parse(localStorage.getItem("tasks"));
-        if (savedTasks) {
-            savedTasks.forEach(task => taskList.push(task));
-            updateTaskDisplay();
-            updateHomePageAlerts();
-            updateDashboardCounters();
-        }
-    }
-
-    /* Whenever a task is completed it moves and updates counters*/
-
-    window.completeTask = function (name) {
-
-        const taskIndex = taskList.findIndex(task => task.name === name);
-
-        if (taskIndex > -1) {
-            taskList[taskIndex].status = "complete";
-            updateTaskDisplay();
-            saveTasksToLocalStorage();
-            updateHomePageAlerts();
-            updateDashboardCounters();
-        }
-    };
-
-    /* Same logic as the completed */
-
-    window.deleteTask = function (name) {
-
-        const updatedTasks = taskList.filter(task => task.name !== name);
-
-        taskList.length = 0;
-        taskList.push(...updatedTasks);
-
-        saveTasksToLocalStorage();
-        updateTaskDisplay();
-        updateHomePageAlerts();
-        updateDashboardCounters();
-    };
-
-    /* it updates the home page*/
+    /* Updates the Homepage */
 
     function updateHomePageAlerts() {
 
@@ -192,11 +197,11 @@ if (sortOption) sortOption.addEventListener("change", updateTaskDisplay);
         taskList.forEach(task => {
 
             if (task.priority === "high" && task.status === "incomplete") {
-                criticalAlerts.push(`🔴 ${task.name} - Due: ${task.dueDate}`);
+                criticalAlerts.push(`🔴 ${task.name} - Due: ${new Date(task.dueDate).toLocaleString()}`);
             }
 
             if (task.status === "complete") {
-                latestActivity.push(`✅ ${task.name} completed on ${task.dueDate}`);
+                latestActivity.push(`✅ ${task.name} completed on ${new Date(task.dueDate).toLocaleString()}`);
             }
         });
 
@@ -205,4 +210,5 @@ if (sortOption) sortOption.addEventListener("change", updateTaskDisplay);
     }
 
     loadTasksFromLocalStorage();
+
 });

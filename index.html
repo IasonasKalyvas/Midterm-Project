@@ -8,42 +8,15 @@
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="global.css">
     <title>Index Page</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg  main-header shadow-sm">
-    <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="index.html">
-            <img src="logo.jpg" class="logo-img me-2" alt="logo">
-            <span class="fw-bold fs-3">FreshTrack</span>
-        </a>
+<body>
 
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<!-- ✅ Navbar INSIDE body -->
+<div id="navbar-container"></div>
 
-        <div class="collapse navbar-collapse justify-content-end" id="menu">
-            <ul class="navbar-nav nav-links align-items-lg-center">
-                <li class="nav-item"><a class="nav-link" href="tasks.html">Tasks</a></li>
-                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="report.html">Reports</a></li>
+<main class="container py-5">
 
-                <li class="nav-item ms-lg-3">
-                    <button id="darkModeToggle" class="btn btn-outline-info" aria-label="Toggle Dark Mode">
-                        <i id="darkModeIcon" class="bi bi-moon-fill fs-4"></i>
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<!-- Main Body -->
-<div class="container py-5">
-
-    <!-- Welcome Section + Message -->
     <section class="hero-section text-center mb-5">
         <h1 class="hero-title">Welcome to FreshTrack</h1>
         <p class="hero-subtitle">
@@ -53,7 +26,6 @@
         <p class="hero-date">Today's date: <span id="dynamicDate"></span></p>
     </section>
 
-    <!-- Stats added from the Tasks page -->
     <section class="stats-section row g-4">
         <div class="col-md-4">
             <div class="stat-card">
@@ -77,21 +49,17 @@
         </div>
     </section>
 
-    <!-- Critical alerts updated from tasks page (whenever a user inputs an incomplete task of high importance) -->
     <section class="data-panel mt-5">
         <h3><i class="bi bi-exclamation-triangle-fill text-danger"></i> Critical Alerts</h3>
         <ul id="criticalAlerts"></ul>
     </section>
 
-    <!-- Latest activities updated from tasks page (whenever a user inputs a completed task) -->
     <section class="data-panel mt-5">
         <h3><i class="bi bi-check-circle-fill text-success"></i> Latest Activity</h3>
         <ul id="latestActivity"></ul>
     </section>
 
-    <!-- Weather API -->
     <section class="weather-panel mt-5 mb-5">
-
         <h3 class="weather-title">Weather Update</h3>
 
         <div class="search">
@@ -105,7 +73,6 @@
             <h2 class="city">Loading...</h2>
 
             <div class="weather-details d-flex justify-content-around mt-3">
-
                 <div class="detail-box">
                     <img src="Humidity.png" class="detail-icon" alt="humidity icon">
                     <p class="humidity">--%</p>
@@ -117,20 +84,18 @@
                     <p class="wind">-- Km/h</p>
                     <span>Wind Speed</span>
                 </div>
-
             </div>
         </div>
     </section>
 
-</div>
+</main>
 
-<!-- Footer -->
-<footer class="main-footer text-center p-4">
-    <img src="logo.jpg" class="footer-logo mb-2" alt="logo">
-    <p><a href="about.html" class="footer-link">About Us</a></p>
-    <p class="mt-2">© 2026 FreshTrack Inc. All rights reserved.</p>
-</footer>
+<!-- ✅ Footer INSIDE body -->
+<div id="footer-container"></div>
 
-<script src="index.js"></script>
 <script src="global.js"></script>
+<script src="index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

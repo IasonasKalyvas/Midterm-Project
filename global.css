@@ -24,9 +24,7 @@ html.dark{
  --shadow: rgba(125, 240, 161, 0.25);
 }
 
-/* ===============================
-   Global Layout & Characters
-================================ */
+/* Layout and Characters */
 
 html, body {
     height: 100%;
@@ -53,9 +51,7 @@ a{
  text-decoration: none;
 }
 
-/* ===============================
-   Navigation bar
-================================ */
+/* Nav Bar */
 
 .main-header{
  background: var(--card);
@@ -87,9 +83,7 @@ a{
  border-radius: 8px;
 }
 
-/* ===============================
-   Theme
-================================ */
+/* Theme */
 
 .theme-toggle{
  display: inline-flex;
@@ -107,9 +101,7 @@ a{
  font-size: 20px;
 }
 
-/* ===============================
-   Footer
-================================ */
+/* Footer */
 
 .main-footer{
  background: var(--card);
@@ -122,9 +114,7 @@ a{
  font-weight: 600;
 }
 
-/* ===============================
-   Smooth transition
-================================ */
+/* Transition */
 
 @media (prefers-reduced-motion: no-preference){
  html, body, .theme-toggle{
