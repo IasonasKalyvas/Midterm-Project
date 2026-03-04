@@ -1,4 +1,4 @@
-/* Storage (Unchanged) */
+/* Storage */
 window.getLocalStorageArray = function (key) {
     try {
         const data = localStorage.getItem(key);
@@ -53,7 +53,7 @@ const getFooterHTML = () => `
     </footer>
 `;
 
-/* Dark Mode Logic (Unchanged) */
+/* Dark Mode Logic */
 function initializeDarkMode() {
     const toggleBtn = document.getElementById("darkModeToggle");
     const toggleIcon = document.getElementById("darkModeIcon");
@@ -93,14 +93,10 @@ function initializeDarkMode() {
 
 /* Orchestration */
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Inject the HTML first
     const navContainer = document.getElementById("navbar-container");
     const footerContainer = document.getElementById("footer-container");
-
     if (navContainer) navContainer.innerHTML = getNavbarHTML();
     if (footerContainer) footerContainer.innerHTML = getFooterHTML();
-
-    // 2. Now that elements exist, initialize logic
     initializeDarkMode();
 });
 
